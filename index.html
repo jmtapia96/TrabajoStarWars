@@ -3,9 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Hangar de Naves Rebeldes</title>
+    <link rel="stylesheet" href="css/style.css"> 
 </head>
 <body>
-    
+
+    <header>
+        <h1>Hangar de Naves Rebeldes</h1>
+        <p>Haz clic en una nave para ver sus detalles</p>
+    </header>
+
+    <main>
+        <section id="controles">
+            <div class="grupo-control">
+                <input type="text" id="buscador" placeholder="Buscar nave por nombre...">
+            </div>
+
+            <div class="grupo-control">
+                <select id="filtroTipo">
+                    <option value="todos">Todos los tipos</option>
+                    <option value="caza">Caza</option>
+                    <option value="transporte">Transporte</option>
+                    <option value="fragata">Fragata</option>
+                </select>
+            </div>
+
+            <div class="grupo-control">
+                <button id="btnOrden">Velocidad ↑↓</button>
+            </div>
+
+            <div class="info-hangar">
+                <p>Naves: <strong id="contador">0</strong></p>
+            </div>
+        </section>
+
+        <hr>
+
+        <section id="contenedor-naves" class="grid-hangar"></section>
+    </main>
+
+    <div id="modal-nave" class="modal">
+        <div class="modal-contenido">
+            <span class="cerrar-modal">&times;</span>
+            <div id="detalles-nave">
+                </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
 </body>
 </html>

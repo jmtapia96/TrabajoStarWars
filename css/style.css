@@ -1,0 +1,95 @@
+/* --- Estilos Generales --- */
+body { 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    background: #121212; /* Fondo muy oscuro */
+    color: #e0e0e0; 
+    margin: 0; padding: 20px; 
+}
+
+h1 { text-align: center; color: #f1c40f; } /* Amarillo Star Wars */
+header p { text-align: center; color: #aaa; }
+
+/* --- Controles --- */
+#controles {
+    display: flex; flex-wrap: wrap; gap: 15px;
+    justify-content: center; align-items: center; margin-bottom: 20px;
+}
+input, select, button {
+    padding: 10px 15px; background: #222; border: 1px solid #444;
+    color: white; border-radius: 5px; font-size: 1rem;
+}
+button { cursor: pointer; background: #333; transition: 0.3s; }
+button:hover { background: #444; border-color: #f1c40f; }
+
+.info-hangar { font-size: 1.1rem; }
+#contador { color: #f1c40f; font-size: 1.3rem; }
+
+hr { border: 0; border-top: 1px solid #333; margin: 20px 0; }
+
+/* --- Galería de Imágenes (Grid) --- */
+.grid-hangar {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Celdas más pequeñas */
+    gap: 15px;
+}
+
+.nave-item {
+    background: #1a1a1a; padding: 10px; border-radius: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer; display: flex; justify-content: center; align-items: center;
+}
+
+.nave-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(241, 196, 15, 0.3); /* Resplandor amarillo */
+}
+
+.nave-imagen-click img {
+    max-width: 100%; height: auto; display: block;
+}
+
+.emoji-grande { font-size: 4rem; }
+
+/* --- Ventana Modal (Estilos Base ocultos) --- */
+.modal {
+    display: none; /* Oculta por defecto */
+    position: fixed; z-index: 1000; left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.85); /* Fondo negro translúcido */
+    justify-content: center; align-items: center; /* Centrado */
+    opacity: 0; transition: opacity 0.3s ease;
+}
+
+/* Clase que JS añade para mostrarla */
+.modal.mostrar {
+    display: flex; opacity: 1;
+}
+
+.modal-contenido {
+    background-color: #222; color: white;
+    padding: 30px; border-radius: 12px;
+    width: 90%; max-width: 500px;
+    position: relative;
+    border: 2px solid #444;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.cerrar-modal {
+    position: absolute; top: 10px; right: 20px;
+    color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer;
+}
+.cerrar-modal:hover { color: #f1c40f; }
+
+/* --- Estilos dentro de la Modal --- */
+.detalle-header { text-align: center; margin-bottom: 20px; }
+.detalle-img { max-width: 100px; margin-bottom: 15px; }
+.detalle-info p { margin: 10px 0; font-size: 1.1rem; border-bottom: 1px solid #333; padding-bottom: 5px;}
+.detalle-info strong { color: #aaa; }
+
+.estado-tag {
+    padding: 5px 10px; border-radius: 4px; font-size: 0.8rem;
+    text-transform: uppercase; font-weight: bold;
+}
+.estado-operativa { background-color: #27ae60; }
+.estado-reparacion { background-color: #f39c12; color: black;}
+.estado-destruida { background-color: #c0392b; }
