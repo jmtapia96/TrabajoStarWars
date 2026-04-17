@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hangar de Naves Rebeldes</title>
+    <title>Hangar de la Alianza Rebelde</title>
     <link rel="stylesheet" href="css/style.css"> 
 </head>
 <body>
@@ -14,41 +14,77 @@
     </header>
 
     <main>
-        <section id="controles">
-            <div class="grupo-control">
-                <input type="text" id="buscador" placeholder="Buscar nave por nombre...">
+        <section id="hangar">
+            <div id="controles">
+                <div class="grupo-control">
+                    <input type="text" id="buscador" placeholder="Buscar nave por nombre...">
+                </div>
+                <div class="grupo-control">
+                    <select id="filtroTipo">
+                        <option value="todos">Todos los tipos</option>
+                        <option value="caza">Caza</option>
+                        <option value="transporte">Transporte</option>
+                        <option value="fragata">Fragata</option>
+                    </select>
+                </div>
+                <div class="grupo-control">
+                    <button id="btnOrden">Velocidad ↑↓</button>
+                </div>
+                <div class="info-hangar">
+                    <p>Naves: <strong id="contador">0</strong></p>
+                </div>
             </div>
-
-            <div class="grupo-control">
-                <select id="filtroTipo">
-                    <option value="todos">Todos los tipos</option>
-                    <option value="caza">Caza</option>
-                    <option value="transporte">Transporte</option>
-                    <option value="fragata">Fragata</option>
-                </select>
-            </div>
-
-            <div class="grupo-control">
-                <button id="btnOrden">Velocidad ↑↓</button>
-            </div>
-
-            <div class="info-hangar">
-                <p>Naves: <strong id="contador">0</strong></p>
-            </div>
+            <hr>
+            <div id="contenedor-naves" class="grid-hangar"></div>
         </section>
 
-        <hr>
-
-        <section id="contenedor-naves" class="grid-hangar"></section>
-    </main>
-
-    <div id="modal-nave" class="modal">
-        <div class="modal-contenido">
-            <span class="cerrar-modal">&times;</span>
-            <div id="detalles-nave">
-                </div>
+        <div id="modal-nave" class="modal">
+            <div class="modal-contenido">
+                <span class="cerrar-modal">&times;</span>
+                <div id="detalles-nave"></div>
+            </div>
         </div>
-    </div>
+
+        <section id="registro-pilotos">
+            <h2>Registro de Pilotos</h2>
+            <form id="form-piloto">
+                <input type="hidden" id="piloto-id"> 
+                <div class="grid-form">
+                    <input type="text" id="piloto-nombre" placeholder="Nombre del Piloto" required>
+                    <select id="piloto-rango" required>
+                        <option value="">Selecciona Rango</option>
+                        <option value="Cadete">Cadete</option>
+                        <option value="Oficial">Oficial</option>
+                        <option value="Capitán">Capitán</option>
+                        <option value="Comandante">Comandante</option>
+                    </select>
+                    <select id="piloto-nave" required></select>
+                    <input type="number" id="piloto-victorias" placeholder="Victorias" min="0" required>
+                    <select id="piloto-estado" required>
+                        <option value="activo">Activo</option>
+                        <option value="herido">Herido</option>
+                        <option value="KIA">KIA</option>
+                    </select>
+                </div>
+                <button type="submit" id="btn-guardar-piloto">Registrar Piloto</button>
+                <button type="button" id="btn-cancelar" style="display:none;">Cancelar Edición</button>
+            </form>
+
+            <table id="tabla-pilotos">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Rango</th>
+                        <th>Nave</th>
+                        <th>Victorias</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="lista-pilotos"></tbody>
+            </table>
+        </section>
+    </main>
 
     <script src="js/main.js"></script>
 </body>
