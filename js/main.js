@@ -1,7 +1,6 @@
-/**
- * DATOS INICIALES HARDCODEADOS
- * Requisito: Array de objetos JS con las propiedades de las naves.
- */
+/*Naves de la sección 1 Hangar*/
+
+
 const naves = [
     { id: 1, nombre: "X-Wing", tipo: "caza", velocidad: 100, tripulacion: 1, estado: "operativa" },
     { id: 2, nombre: "Millennium Falcon", tipo: "transporte", velocidad: 80, tripulacion: 4, estado: "reparacion" },
@@ -17,7 +16,7 @@ const naves = [
     { id: 12, nombre: "Destructor Venator", tipo: "fragata", velocidad: 45, tripulacion: 7400, estado: "operativa" }
 ];
 
-// Objeto auxiliar para emparejar el ID de la nave con la ruta de su imagen
+// Nos sirve para emparejar el ID de la nave con la ruta de su imagen
 const imagenesNaves = {
     1: 'img/ala_x.png', 2: 'img/halcon_milenario_final.png', 3: 'img/ala_a.png',
     4: 'img/nebulon_b.png', 5: 'img/ala_y.png', 6: 'img/caza_jedi.png',
@@ -26,9 +25,9 @@ const imagenesNaves = {
 };
 
 /**
- * PERSISTENCIA DE DATOS (LocalStorage)
+ * Persistencia de datos (LocalStorage)
  * Leemos la memoria del navegador. Si no existe la clave, iniciamos con un array vacío [].
- * JSON.parse convierte el texto guardado de vuelta a un formato Objeto/Array de JS.
+ * JSON.parse convierte el texto guardado en un array de JS para que pueda empezar a trabajar.
  */
 let pilotos = JSON.parse(localStorage.getItem('pilotos_rebeldes')) || [];
 let misiones = JSON.parse(localStorage.getItem('misiones_rebeldes')) || [];
@@ -38,13 +37,12 @@ let ordenAscendente = true; // Controla la dirección del botón de ordenar velo
 let editando = false;       // Bandera para saber si el formulario de pilotos crea o actualiza
 
 /**
- * EVENTO PRINCIPAL: DOMContentLoaded
- * Nos aseguramos de que el HTML cargue completamente antes de que el JS intente buscar IDs.
+ * Con esta lina nos aseguramos que el HTML este cargado completamente antes de que el JavaScript haga lo suyo
  */
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- LÓGICA MODO CLARO/OSCURO ---
-    // 1. Al cargar la web, comprobamos si el usuario ya tenía guardado el tema 'claro'
+    // --- Modo oscuro/claro ---
+    // 1. Al cargar la web, comprobamos si el usuario ya tenía guardado el tema 'claro' y lo mostramos si fuera el caso
     if (localStorage.getItem('tema_rebelde') === 'claro') {
         document.body.classList.add('light-mode');
     }
@@ -59,9 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Iniciar la web mostrando el Hangar por defecto
-    mostrarSeccion('hangar'); 
+    mostrarSeccion('hangar');
 
-    // --- ESCUCHADORES DE EVENTOS (Listeners) ---
+    // --- Eventos del DOM ---
     // Hangar
     document.getElementById('buscador').addEventListener('input', actualizarHangar); // Busca "en tiempo real" al teclear
     document.getElementById('filtroTipo').addEventListener('change', actualizarHangar);
@@ -87,9 +85,10 @@ document.addEventListener('DOMContentLoaded', () => {
     renderizarMisiones();
 });
 
-// ==========================================
-// 1. NAVEGACIÓN SPA (Single Page Application)
-// ==========================================
+//--------------------------------------------
+// 1. Navegación de una sola pagina, esta parte es para ocultar y mostrar las secciones
+//--------------------------------------------
+
 function mostrarSeccion(idSeccion) {
     // 1. Seleccionamos todos los <section> dentro del <main> y los ocultamos
     const secciones = document.querySelectorAll('main > section');
@@ -117,15 +116,15 @@ function mostrarSeccion(idSeccion) {
     if(idSeccion === 'dashboard') actualizarDashboard(); 
 }
 
-// ==========================================
-// 2. LÓGICA DEL HANGAR (Filtros y DOM)
-// ==========================================
+//--------------------------------------------
+// 2. Filtros y DOM del Hangar
+//--------------------------------------------
 function actualizarHangar() {
     const busqueda = document.getElementById('buscador').value.toLowerCase();
     const tipo = document.getElementById('filtroTipo').value;
 
-    // Uso de .filter(): Recorre el array y devuelve un array nuevo solo con las naves que cumplen las condiciones
-    const filtradas = naves.filter(n => 
+    // Uso de .filter recorre el array y devuelve un array nuevo solo con las naves que cumplen las condiciones
+    const filtradas = naves.filter(n =>
         n.nombre.toLowerCase().includes(busqueda) && (tipo === "todos" || n.tipo === tipo)
     );
 
@@ -135,31 +134,31 @@ function actualizarHangar() {
 
 function renderizarTarjetas(lista) {
     const contenedor = document.getElementById('contenedor-naves');
-    contenedor.innerHTML = ""; // Vaciamos el contenedor (sin HTML estático, todo desde JS)
+    contenedor.innerHTML = ""; // Vaciamos el contenedor
     
-    // Uso de .forEach() para iterar sobre el array y crear elementos <div>
+    // Uso de .forEach para iterar sobre el array y crear los elementos <div>
     lista.forEach(n => {
         const div = document.createElement('div');
         div.className = 'nave-item';
         // onerror se usa por si la imagen no existe en la carpeta img/, pone un cohete por defecto
         div.innerHTML = `<img src="${imagenesNaves[n.id]}" alt="${n.nombre}" style="width:100%" onerror="this.outerHTML='<span style=\\'font-size:3rem;\\'>🚀</span>'">`;
-        div.onclick = () => mostrarDetallesNave(n.id); // Al hacer clic, abre la modal
+        div.onclick = () => mostrarDetallesNave(n.id); // Al hacer click, abre la modal
         contenedor.appendChild(div);
     });
 }
 
 function ordenarPorVelocidad() {
-    ordenAscendente = !ordenAscendente; // Alterna entre true y false
-    // Uso de .sort(): Compara a y b. Si devuelve positivo, b va antes. Si negativo, a va antes.
+    ordenAscendente = !ordenAscendente; // Alterna entre true y false para elegir si ascendente o descendente
+    // Uso de .sort compara a y b. Si devuelve positivo, b va antes. Si devuelve negativo, entonces a va antes.
     naves.sort((a, b) => ordenAscendente ? a.velocidad - b.velocidad : b.velocidad - a.velocidad);
-    actualizarHangar(); // Repintamos las tarjetas
+    actualizarHangar(); // actualizamos las tarjetas
 }
 
 function mostrarDetallesNave(id) {
-    // Uso de .find(): Busca el primer elemento que coincida con el ID
+    // Con el .find buscamos el primer elemento que coincida con el ID
     const n = naves.find(x => x.id === id);
     const contenedor = document.getElementById('detalles-nave');
-    // Rellenamos el HTML interno de la ventana modal
+    // Rellenamos el HTML interno de la ventana modal con el inner
     contenedor.innerHTML = `
         <div class="detalle-header">
             <h2>${n.nombre}</h2>
@@ -172,11 +171,11 @@ function mostrarDetallesNave(id) {
 }
 
 function cerrarModal() { 
-    document.getElementById('modal-nave').classList.remove('mostrar'); 
+    document.getElementById('modal-nave').classList.remove('mostrar');
 }
 
 //--------------------------------------------
-// 3. LÓGICA DE PILOTOS (CRUD y LocalStorage)
+// 3. CRUD y LocalStorage de Pilotos
 //--------------------------------------------
 function rellenarSelectorNaves() {
     const select = document.getElementById('piloto-nave');
@@ -199,11 +198,11 @@ function gestionarFormularioPiloto(e) {
     };
 
     if (editando) {
-        // Uso de .map(): Sustituye el objeto antiguo por el nuevo modificado
+        // Usamos el.map para sustituir el objeto antiguo por el nuevo modificado
         pilotos = pilotos.map(p => p.id === datos.id ? datos : p);
     } else {
         // Operación CREATE
-        pilotos.push(datos); 
+        pilotos.push(datos);
     }
 
     // Persistencia: Convertimos el array a string y lo guardamos
@@ -232,7 +231,7 @@ function renderizarPilotos() {
 }
 
 function eliminarPiloto(id) {
-    // confirm() lanza la alerta del navegador para preguntar (Requisito CRUD)
+    // confirm lanza la alerta del navegador para confirmar la accion, en este caso de eliminar el piloto.
     if (confirm("¿Eliminar piloto?")) {
         // Operación DELETE: Sobrescribimos el array filtrando el ID que queremos borrar
         pilotos = pilotos.filter(p => p.id !== id);
@@ -242,7 +241,7 @@ function eliminarPiloto(id) {
 }
 
 function prepararEdicionPiloto(id) {
-    // Operación UPDATE (Parte 1): Buscar datos y meterlos en el formulario
+    // Actualizar pilotos: Buscamos los datos y los metemos en el formulario
     const p = pilotos.find(x => x.id === id);
     document.getElementById('piloto-id').value = p.id;
     document.getElementById('piloto-nombre').value = p.nombre;
@@ -251,7 +250,7 @@ function prepararEdicionPiloto(id) {
     document.getElementById('piloto-victorias').value = p.victorias;
     document.getElementById('piloto-estado').value = p.estado;
     
-    // Cambiamos el estado de la interfaz para que el usuario sepa que está editando
+    // Cambiamos el estado de la interfaz para que el usuario sepa que está editando y se muestren los datos actuales del piloto para su edicion
     editando = true;
     document.getElementById('btn-guardar-piloto').textContent = "Actualizar";
     document.getElementById('btn-cancelar').style.display = "inline";
@@ -267,12 +266,12 @@ function limpiarFormularioPiloto() {
 }
 
 //--------------------------------------------
-// 4. LÓGICA DE MISIONES (Tablero Kanban)
+// 4. Misiones (Tablero Kanban)
 //--------------------------------------------
 function rellenarSelectorPilotosActivos() {
     const select = document.getElementById('mision-piloto');
     select.innerHTML = '<option value="">Asignar Piloto Activo</option>';
-    // Esto obliga que solo los pilotos con estado "activo" pueden asignarse a misiones
+    // Esto obliga que solo los pilotos con estado activo pueden asignarse a misiones
     const activos = pilotos.filter(p => p.estado === 'activo');
     activos.forEach(p => select.innerHTML += `<option value="${p.nombre}">${p.nombre} (${p.rango})</option>`);
 }
@@ -286,7 +285,7 @@ function guardarMision(e) {
         piloto: document.getElementById('mision-piloto').value,
         dificultad: document.getElementById('mision-dificultad').value,
         fecha: document.getElementById('mision-fecha').value,
-        estado: 'pendiente' // Siempre inician en pendiente
+        estado: 'pendiente' // Para que siempre inicien las misiones como pendientes
     };
 
     misiones.push(nuevaMision);
@@ -329,7 +328,7 @@ function renderizarMisiones() {
         else if (m.estado === 'completada') { document.getElementById('contenedor-completada').appendChild(div); cCompletadas++; }
     });
 
-    // 4. Escribimos los contadores numéricos en las cabeceras
+    // 4. Escribimos los contadores en las cabeceras
     document.getElementById('contador-pendiente').textContent = cPendientes;
     document.getElementById('contador-curso').textContent = cCurso;
     document.getElementById('contador-completada').textContent = cCompletadas;
@@ -362,7 +361,7 @@ function eliminarMision(id) {
 }
 
 //--------------------------------------------
-// 5. DASHBOARD (Estadísticas y DOM)
+// 5. Dashboard (Estadísticas y DOM)
 //--------------------------------------------
 function actualizarDashboard() {
     // Naves: Usamos .filter().length para contar cuántas cumplen la condición correspondiente segun su estado(operativa, en reparacion o destruida)
@@ -371,17 +370,17 @@ function actualizarDashboard() {
     document.getElementById('dash-naves-rep').textContent = naves.filter(n => n.estado === 'reparacion').length;
     document.getElementById('dash-naves-des').textContent = naves.filter(n => n.estado === 'destruida').length;
 
-    // Hacemos uso de .reduce(). para comparar todas las naves y se queda con el objeto que un numero mas alto en su atributo de 'velocidad'
+    // Hacemos uso de .reduce(). para comparar todas las naves y se queda con el objeto que tenga el numero mas alto en su atributo de 'velocidad'
     const naveRapida = naves.reduce((max, nave) => (nave.velocidad > max.velocidad) ? nave : max, naves[0]);
     document.getElementById('dash-nave-rapida').textContent = naveRapida ? `${naveRapida.nombre} (${naveRapida.velocidad} MGLT)` : "No hay datos";
 
-    // Pilotos, le damos el mismo uso del .filter().lenght que en el de las naves
+    // Para los pilotos, le damos el mismo uso del .filter().lenght que en el de las naves
     document.getElementById('dash-pilotos-total').textContent = pilotos.length;
     document.getElementById('dash-pilotos-act').textContent = pilotos.filter(p => p.estado === 'activo').length;
     document.getElementById('dash-pilotos-her').textContent = pilotos.filter(p => p.estado === 'herido').length;
     document.getElementById('dash-pilotos-kia').textContent = pilotos.filter(p => p.estado === 'KIA').length;
 
-    // Aqui usamos el .reduce() para buscar al piloto con la máxima cantidad de victorias)
+    // Aqui usamos el .reduce para buscar al piloto con la máxima cantidad de victorias)
     if (pilotos.length > 0) {
         const mejorPiloto = pilotos.reduce((max, p) => (p.victorias > max.victorias) ? p : max, pilotos[0]);
         document.getElementById('dash-mejor-piloto').textContent = `${mejorPiloto.nombre} (${mejorPiloto.victorias} victorias)`;

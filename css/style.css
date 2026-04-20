@@ -1,37 +1,37 @@
-/* --- VARIABLES GLOBALES (Modo Oscuro por Defecto) --- 
-   Uso de variables (--nombre) para poder cambiar los colores de toda la web fácilmente. */
+/* --- VARIABLES GLOBALES (Modo Oscuro por Defecto) ---
+   Uso de variables (--nombre) para poder cambiar los colores mas facilmente */
 :root {
     --color-fondo: #121212;
     --color-paneles: #1e1e1e;
     --color-bordes: #333;
     --color-texto: #e0e0e0;
-    --color-acento: #f1c40f; /* Amarillo Star Wars */
+    --color-acento: #f1c40f; /* Amarillo para el modo oscuro*/
     --color-hover: #444;
     --color-peligro: #ff6b6b;
     --color-exito: #27ae60;
     --color-alerta: #f39c12;
 }
 
-/* --- MODO CLARO --- 
-   Cuando añadimos la clase 'light-mode' al <body> mediante JS, 
-   estas variables sobrescriben a las oscuras de arriba. */
+/* --- MODO CLARO ---
+Cuando añadimos la clase 'light-mode' al <body> mediante JS,
+estas variables sobrescriben a las oscuras de arriba. */
 body.light-mode {
     --color-fondo: #f0f2f5;
     --color-paneles: #ffffff;
     --color-bordes: #cccccc;
     --color-texto: #1a1a1a;
-    --color-acento: #2980b9; /* Azul rebelde para contrastar en fondo blanco */
+    --color-acento: #2980b9; /* Azul para contrastar en fondo blanco el amarillo se veia poco */
     --color-hover: #e2e8f0;
 }
 
-/* --- ESTILOS GENERALES --- */
-body { 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-    background: var(--color-fondo); 
-    color: var(--color-texto); 
-    margin: 0; 
+/* Estilos */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--color-fondo);
+    color: var(--color-texto);
+    margin: 0;
     padding-top: 150px; /* Espacio para que el header fijo no tape contenido */
-    transition: background 0.3s, color 0.3s; /* Animación suave al cambiar tema */
+    transition: background 0.3s, color 0.3s; /* Animación  para la que la transición sea suave al cambiar tema */
 }
 h1, h2, h3 { color: var(--color-acento); text-align: center; }
 .sr-only { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
@@ -42,54 +42,54 @@ h1, h2, h3 { color: var(--color-acento); text-align: center; }
 .txt-alerta { color: var(--color-alerta); }
 .txt-acento { color: var(--color-acento); }
 
-/* --- HEADER Y NAVEGACIÓN --- */
+/* Header y el nav */
 header { position: fixed; top: 0; left: 0; width: 100%; background: var(--color-paneles); z-index: 100; border-bottom: 2px solid var(--color-acento); box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
 .header-top { display: flex; align-items: center; justify-content: center; position: relative; padding: 15px 10px 5px 10px; min-height: 80px; }
 
-/* Botón Logo Rebelión (¡TAMAÑO CORREGIDO!) */
-#btn-tema { 
-    position: absolute; 
-    left: 20px; 
-    width: 75px; /* Aumentado de 50px a 75px para mayor visibilidad */
-    cursor: pointer; 
-    transition: transform 0.3s, filter 0.3s; 
+/* Botón Logo Reberde */
+#btn-tema {
+    position: absolute;
+    left: 20px;
+    width: 75px;
+    cursor: pointer;
+    transition: transform 0.3s, filter 0.3s;
 }
-#btn-tema:hover { transform: scale(1.05); filter: drop-shadow(0 0 8px var(--color-acento)); }
+#btn-tema:hover { transform: scale(1.05); filter: drop-shadow(0 0 8px var(--color-acento));}
 
 .header-titulos h1 { margin: 0; font-size: 1.8rem; }
-.header-titulos p { text-align: center; margin: 5px 0 10px 0; color: #888; font-size: 0.9rem; }
-.nav-principal { display: flex; justify-content: center; background: rgba(0,0,0,0.2); }
+.header-titulos p { text-align: center; margin: 5px 0 10px 0; color: #888; font-size: 0.9rem;}
+.nav-principal { display: flex; justify-content: center; background: rgba(0,0,0,0.2);}
 .btn-nav { flex: 1; padding: 12px; border: none; background: transparent; color: var(--color-texto); cursor: pointer; text-transform: uppercase; font-weight: bold; border-right: 1px solid var(--color-bordes); transition: 0.3s; }
-.btn-nav:hover { background: var(--color-hover); }
-.btn-nav.activo { background: var(--color-hover); color: var(--color-acento); border-bottom: 3px solid var(--color-acento); }
+.btn-nav:hover { background: var(--color-hover);}
+.btn-nav.activo { background: var(--color-hover); color: var(--color-acento); border-bottom: 3px solid var(--color-acento);}
 
-main { padding: 20px; max-width: 1200px; margin: auto; min-height: 70vh; }
+main { padding: 20px; max-width: 1200px; margin: auto; min-height: 70vh;}
 
-/* Efecto SPA: Ocultar y mostrar secciones con animación */
-.seccion-oculta { display: none; }
-.seccion-activa { display: block; animation: fadeIn 0.5s ease; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+/* Esto sirve para ocultar y mostrar secciones con animación */
+.seccion-oculta { display: none;}
+.seccion-activa { display: block; animation: fadeIn 0.5s ease;}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1;}}
 
 /* --- FORMULARIOS E INPUTS --- */
 #controles, .grid-form, .controles-misiones { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin-bottom: 20px; background: var(--color-paneles); padding: 20px; border-radius: 8px; border: 1px solid var(--color-bordes); }
-input, select, button { padding: 10px; background: var(--color-fondo); color: var(--color-texto); border: 1px solid var(--color-bordes); border-radius: 5px; font-family: inherit; }
+input, select, button { padding: 10px; background: var(--color-fondo); color: var(--color-texto); border: 1px solid var(--color-bordes); border-radius: 5px; font-family: inherit;}
 button { cursor: pointer; transition: 0.3s; background: var(--color-paneles); }
 button:hover { background: var(--color-hover); border-color: var(--color-acento); }
 
 /* --- HANGAR --- */
-.grid-hangar { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
-.nave-item { background: var(--color-paneles); padding: 10px; border-radius: 8px; border: 1px solid var(--color-bordes); cursor: pointer; transition: 0.2s; text-align: center; }
-.nave-item:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); border-color: var(--color-acento); }
+.grid-hangar { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px;}
+.nave-item { background: var(--color-paneles); padding: 10px; border-radius: 8px; border: 1px solid var(--color-bordes); cursor: pointer; transition: 0.2s; text-align: center;}
+.nave-item:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); border-color: var(--color-acento);}
 
 /* --- MODAL --- */
-.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; }
-.modal.mostrar { display: flex; }
-.modal-contenido { background: var(--color-paneles); padding: 30px; border-radius: 12px; border: 2px solid var(--color-acento); width: 90%; max-width: 400px; position: relative; text-align: center; }
-.cerrar-modal { position: absolute; top: 10px; right: 20px; font-size: 25px; cursor: pointer; color: var(--color-texto); }
-.detalle-img { width: 150px; margin-bottom: 15px; }
+.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); align-items: center; justify-content: center;}
+.modal.mostrar { display: flex;}
+.modal-contenido { background: var(--color-paneles); padding: 30px; border-radius: 12px; border: 2px solid var(--color-acento); width: 90%; max-width: 400px; position: relative; text-align: center;}
+.cerrar-modal { position: absolute; top: 10px; right: 20px; font-size: 25px; cursor: pointer; color: var(--color-texto);}
+.detalle-img { width: 150px; margin-bottom: 15px;}
 
 /* --- TABLA PILOTOS --- */
-table { width: 100%; border-collapse: collapse; margin-top: 20px; background: var(--color-paneles); border-radius: 8px; overflow: hidden; border: 1px solid var(--color-bordes); }
+table { width: 100%; border-collapse: collapse; margin-top: 20px; background: var(--color-paneles); border-radius: 8px; overflow: hidden; border: 1px solid var(--color-bordes);}
 th, td { padding: 12px; border-bottom: 1px solid var(--color-bordes); text-align: left; }
 th { color: var(--color-acento); background: rgba(0,0,0,0.1); }
 .estado-KIA { opacity: 0.6; color: var(--color-peligro); text-decoration: line-through; }
@@ -125,15 +125,15 @@ th { color: var(--color-acento); background: rgba(0,0,0,0.1); }
 .flex-lista { display: flex; justify-content: space-around; flex-wrap: wrap; }
 .resalte { background: var(--color-fondo); padding: 10px; border-radius: 5px; margin-top: 15px; text-align: center; border: 1px solid var(--color-bordes);}
 
-/* Barra de Progreso (DOM Puro) */
+/* Barra de Progreso */
 .progreso-contenedor { margin-top: 25px; text-align: center;}
 .barra-fondo { width: 100%; background-color: var(--color-fondo); border: 1px solid var(--color-bordes); border-radius: 15px; overflow: hidden; height: 30px; position: relative; }
 .barra-relleno { height: 100%; background-color: var(--color-exito); text-align: center; line-height: 30px; color: white; font-weight: bold; width: 0%; transition: width 1s ease-in-out; }
 
-/* CORRECCIÓN LETRA MODO CLARO EN PORCENTAJE (Accesibilidad) */
+
 body.light-mode .barra-relleno {
     color: #121212; /* Cambiamos a texto oscuro para mejorar el contraste sobre el verde */
 }
 
-/* --- FOOTER --- */
+/* FOOTER */
 footer { text-align: center; padding: 20px; border-top: 1px solid var(--color-bordes); background: var(--color-paneles); color: #888; font-size: 0.9rem; margin-top: 40px; }
