@@ -3,23 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hangar de la Alianza Rebelde</title>
+    <title>Base de la Alianza Rebelde</title>
     <link rel="stylesheet" href="css/style.css"> 
 </head>
 <body>
 
     <header>
-        <h1>Hangar de Naves Rebeldes</h1>
-        <p>Haz clic en una nave para ver sus detalles</p>
+        <div class="header-top">
+            <img src="img/logo_rebelion.png" alt="Logo Rebelión" id="btn-tema" title="Cambiar Tema (Claro/Oscuro)">
+            <div class="header-titulos">
+                <h1>Base de la Alianza Rebelde</h1>
+                <p>Sistema de Gestión Táctica</p>
+            </div>
+        </div>
+        <nav class="nav-principal">
+            <button onclick="mostrarSeccion('hangar')" class="btn-nav activo" id="nav-hangar">Hangar</button>
+            <button onclick="mostrarSeccion('registro-pilotos')" class="btn-nav" id="nav-pilotos">Pilotos</button>
+            <button onclick="mostrarSeccion('panel-misiones')" class="btn-nav" id="nav-misiones">Misiones</button>
+            <button onclick="mostrarSeccion('dashboard')" class="btn-nav" id="nav-dashboard">Dashboard</button>
+        </nav>
     </header>
 
     <main>
-        <section id="hangar">
+        
+        <section id="hangar" class="seccion-activa">
+            <h2>Hangar de Naves</h2>
             <div id="controles">
                 <div class="grupo-control">
+                    <label for="buscador" class="sr-only">Buscar nave</label>
                     <input type="text" id="buscador" placeholder="Buscar nave por nombre...">
                 </div>
                 <div class="grupo-control">
+                    <label for="filtroTipo" class="sr-only">Filtrar por tipo</label>
                     <select id="filtroTipo">
                         <option value="todos">Todos los tipos</option>
                         <option value="caza">Caza</option>
@@ -38,14 +53,7 @@
             <div id="contenedor-naves" class="grid-hangar"></div>
         </section>
 
-        <div id="modal-nave" class="modal">
-            <div class="modal-contenido">
-                <span class="cerrar-modal">&times;</span>
-                <div id="detalles-nave"></div>
-            </div>
-        </div>
-
-        <section id="registro-pilotos">
+        <section id="registro-pilotos" class="seccion-oculta">
             <h2>Registro de Pilotos</h2>
             <form id="form-piloto">
                 <input type="hidden" id="piloto-id"> 
@@ -73,18 +81,117 @@
             <table id="tabla-pilotos">
                 <thead>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Rango</th>
-                        <th>Nave</th>
-                        <th>Victorias</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
+                        <th>Nombre</th><th>Rango</th><th>Nave</th><th>Victorias</th><th>Estado</th><th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody id="lista-pilotos"></tbody>
             </table>
         </section>
+
+        <section id="panel-misiones" class="seccion-oculta">
+            <h2>Panel de Misiones (Kanban)</h2>
+            <div class="controles-misiones">
+                <form id="form-mision" class="grid-form">
+                    <input type="text" id="mision-nombre" placeholder="Nombre de la Misión" required>
+                    <input type="text" id="mision-descripcion" placeholder="Descripción breve" required>
+                    <select id="mision-piloto" required>
+                        <option value="">Asignar Piloto Activo</option>
+                    </select>
+                    <select id="mision-dificultad" required>
+                        <option value="">Nivel de Dificultad</option>
+                        <option value="fácil">Fácil</option>
+                        <option value="media">Media</option>
+                        <option value="difícil">Difícil</option>
+                        <option value="suicida">Suicida</option>
+                    </select>
+                    <input type="date" id="mision-fecha" required>
+                    <button type="submit" id="btn-guardar-mision">Crear Misión</button>
+                </form>
+
+                <div class="filtro-misiones">
+                    <label for="filtro-dificultad">Filtrar Tablero:</label>
+                    <select id="filtro-dificultad">
+                        <option value="todas">Todas las dificultades</option>
+                        <option value="fácil">Fácil</option>
+                        <option value="media">Media</option>
+                        <option value="difícil">Difícil</option>
+                        <option value="suicida">Suicida</option>
+                    </select>
+                </div>
+            </div>
+            <hr>
+            <div class="kanban-board">
+                <div class="kanban-columna" id="col-pendiente">
+                    <h3>Pendiente (<span id="contador-pendiente">0</span>)</h3>
+                    <div class="kanban-contenido" id="contenedor-pendiente"></div>
+                </div>
+                <div class="kanban-columna" id="col-curso">
+                    <h3>En Curso (<span id="contador-curso">0</span>)</h3>
+                    <div class="kanban-contenido" id="contenedor-curso"></div>
+                </div>
+                <div class="kanban-columna" id="col-completada">
+                    <h3>Completada (<span id="contador-completada">0</span>)</h3>
+                    <div class="kanban-contenido" id="contenedor-completada"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="dashboard" class="seccion-oculta">
+            <h2>Mando de la Alianza (Estadísticas)</h2>
+            <div class="dashboard-grid">
+                
+                <div class="dash-card">
+                    <h3>Hangar</h3>
+                    <p>Total Naves: <strong id="dash-naves-total">0</strong></p>
+                    <ul class="dash-lista">
+                        <li class="txt-exito">Operativas: <span id="dash-naves-op">0</span></li>
+                        <li class="txt-alerta">En Reparación: <span id="dash-naves-rep">0</span></li>
+                        <li class="txt-peligro">Destruidas: <span id="dash-naves-des">0</span></li>
+                    </ul>
+                    <p class="resalte">Nave más rápida:<br><strong id="dash-nave-rapida">-</strong></p>
+                </div>
+
+                <div class="dash-card">
+                    <h3>Personal</h3>
+                    <p>Total Pilotos: <strong id="dash-pilotos-total">0</strong></p>
+                    <ul class="dash-lista">
+                        <li class="txt-exito">Activos: <span id="dash-pilotos-act">0</span></li>
+                        <li class="txt-alerta">Heridos: <span id="dash-pilotos-her">0</span></li>
+                        <li class="txt-peligro">KIA: <span id="dash-pilotos-kia">0</span></li>
+                    </ul>
+                    <p class="resalte">Mejor Piloto:<br><strong id="dash-mejor-piloto">-</strong></p>
+                </div>
+
+                <div class="dash-card dash-card-ancho">
+                    <h3>Estado de Misiones</h3>
+                    <p>Total Misiones: <strong id="dash-misiones-total">0</strong></p>
+                    <ul class="dash-lista flex-lista">
+                        <li>Pendientes: <span id="dash-misiones-pen">0</span></li>
+                        <li class="txt-acento">En Curso: <span id="dash-misiones-cur">0</span></li>
+                        <li class="txt-exito">Completadas: <span id="dash-misiones-com">0</span></li>
+                    </ul>
+                    <div class="progreso-contenedor">
+                        <p><strong>Porcentaje de Éxito (Completadas)</strong></p>
+                        <div class="barra-fondo">
+                            <div id="barra-progreso" class="barra-relleno" style="width: 0%;">0%</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
     </main>
+
+    <div id="modal-nave" class="modal">
+        <div class="modal-contenido">
+            <span class="cerrar-modal">&times;</span>
+            <div id="detalles-nave"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Base de la Alianza Rebelde. Proyecto DAW - Que la Fuerza del DOM te acompañe.</p>
+    </footer>
 
     <script src="js/main.js"></script>
 </body>
